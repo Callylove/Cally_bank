@@ -1,4 +1,4 @@
-const Admin = require('../models/adminModel');
+const Customer = require('../models/customerModel');
 const bcrypt = require('bcrypt');
 
 const registerCustomer = async (data) => {
@@ -30,7 +30,7 @@ const registerCustomer = async (data) => {
         throw { status: 400, message: 'Password must be at least 6 alphanumeric characters' };
     }
 
-    const existingAdmin = await Admin.findOne({
+    const existingCustomer = await Customer.findOne({
         $or: [
             { input_username: username },
             { input_email: email },
@@ -39,12 +39,12 @@ const registerCustomer = async (data) => {
         ]
     });
 
-    if (existingAdmin) {
+    if (existingCustomer) {
         const errors = {};
-        if (existingAdmin.input_email === email) errors.email = 'Email already exists';
-        if (existingAdmin.input_username === username) errors.username = 'Username already exists';
-        if (existingAdmin.input_phone_number === phone_number) errors.phone = 'Phone number already exists';
-        if (existingAdmin.input_account_number === account_number) errors.account_number = 'Account number already exists';
+        if (existingCustomer.input_email === email) errors.email = 'Email already exists';
+        if (existingCustomer.input_username === username) errors.username = 'Username already exists';
+        if (existingCustomer.input_phone_number === phone_number) errors.phone = 'Phone number already exists';
+        if (existingCustomer.input_account_number === account_number) errors.account_number = 'Account number already exists';
         throw { status: 400, errors };
     }
 
